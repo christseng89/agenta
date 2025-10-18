@@ -47,7 +47,18 @@ services:
         env_file:
             - ${ENV_FILE:-./.env.oss.gh}
 
-        command: [ "uvicorn", "entrypoint:app", "--host", "0.0.0.0", "--port", "8000", "--reload", "--root-path", "/api" ]
+        command:
+            [
+                "uvicorn",
+                "entrypoint:app",
+                "--host",
+                "0.0.0.0",
+                "--port",
+                "8000",
+                "--reload",
+                "--root-path",
+                "/api",
+            ]
 
         depends_on:
             postgres:
@@ -122,7 +133,7 @@ services:
         env_file:
             - ${ENV_FILE:-./.env.oss.gh}
 
-        command: [ "python", "oss/src/main.py" ]
+        command: ["python", "oss/src/main.py"]
 
         restart: always
 
@@ -148,7 +159,7 @@ services:
         networks:
             - agenta-oss-gh-network
 
-        command: [ "python", "oss/src/main.py" ]
+        command: ["python", "oss/src/main.py"]
 
         restart: always
 
@@ -167,10 +178,10 @@ services:
             - ${ENV_FILE:-./.env.oss.gh}
 
         ports:
-            - "${POSTGRES_PORT:-5432}:5432"
+            - "${POSTGRES_PORT:-5332}:5432"
 
         healthcheck:
-            test: [ "CMD-SHELL", "pg_isready -U username -d agenta_oss_core" ]
+            test: ["CMD-SHELL", "pg_isready -U username -d agenta_oss_core"]
             interval: 10s
             timeout: 5s
             retries: 5
@@ -225,7 +236,7 @@ services:
         restart: always
 
         healthcheck:
-            test: [ "CMD", "redis-cli", "-p", "6378", "ping" ]
+            test: ["CMD", "redis-cli", "-p", "6378", "ping"]
             interval: 10s
             timeout: 5s
             retries: 5
