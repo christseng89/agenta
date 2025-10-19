@@ -92,6 +92,9 @@ services:
         image: ghcr.io/agenta-ai/${AGENTA_API_IMAGE_NAME:-agenta-api}:${AGENTA_API_IMAGE_TAG:-latest}
         env_file:
             - ${ENV_FILE:-./.env.oss.gh}
+        environment:
+            REDIS_CACHE_HOST: ${REDIS_CACHE_HOST:-cache}
+            REDIS_CACHE_PORT: ${REDIS_CACHE_PORT:-6378}            
         networks: [agenta-oss-gh-network]
         command: sh -c "python -m oss.databases.postgres.migrations.runner"
         depends_on:

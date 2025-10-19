@@ -35,10 +35,10 @@ docker logs agenta-oss-gh-api-1
    2025-10-18T10:51:07.994Z [INFO.] PostHog initialized with host https://app.posthog.com [oss.src.apis.fastapi.observability.router]
    2025-10-18T10:51:16.074Z [INFO.] Agenta - SDK version: 0.55.2 [agenta.sdk.agenta_init]
    2025-10-18T10:51:16.074Z [INFO.] Agenta - SDK version: 0.55.2 [agenta.sdk.agenta_init]
-   2025-10-18T10:51:16.075Z [INFO.] Agenta - Host: http://host.docker.internal:7600 [agenta.sdk.agenta_init]
-   2025-10-18T10:51:16.075Z [INFO.] Agenta - Host: http://host.docker.internal:7600 [agenta.sdk.agenta_init]
-   2025-10-18T10:51:16.075Z [INFO.] Agenta - OLTP URL: http://host.docker.internal:7600/api/otlp/v1/traces [agenta.sdk.tracing.tracing]
-   2025-10-18T10:51:16.075Z [INFO.] Agenta - OLTP URL: http://host.docker.internal:7600/api/otlp/v1/traces [agenta.sdk.tracing.tracing]
+   2025-10-18T10:51:16.075Z [INFO.] Agenta - Host: http://host.docker.internal [agenta.sdk.agenta_init]
+   2025-10-18T10:51:16.075Z [INFO.] Agenta - Host: http://host.docker.internal [agenta.sdk.agenta_init]
+   2025-10-18T10:51:16.075Z [INFO.] Agenta - OLTP URL: http://host.docker.internal/api/otlp/v1/traces [agenta.sdk.tracing.tracing]
+   2025-10-18T10:51:16.075Z [INFO.] Agenta - OLTP URL: http://host.docker.internal/api/otlp/v1/traces [agenta.sdk.tracing.tracing]
 
 docker logs -f agenta-oss-gh-traefik-1
    time="2025-10-18T10:48:33Z" level=info msg="Configuration loaded from flags."
@@ -67,13 +67,55 @@ docker logs -f agenta-oss-gh-supertokens-1
 ```
 
 ```bash
+# Testing SuperTokens
 curl -s http://localhost:3567/hello
    Hello
 
-curl -s http://localhost:7600/api/health
+curl -i -X GET http://localhost:3567/hello
+   HTTP/1.1 200 
+   Content-Type: text/html;charset=UTF-8
+   Content-Length: 6
+   Date: Sun, 19 Oct 2025 10:14:27 GMT
+
+   Hello   
+
+export ST_API_KEY=dev-api-key-12345678901234567890
+curl -s -H "api-key: $ST_API_KEY" http://localhost:3567/apiversion   
+   #{"versions":["2.14","2.13","2.12","2.11","2.10","2.21","2.20","2.19","2.18","2.17","3.0","2.16","3.1","4.0","2.15","5.0","5.1","5.2","5.3","2.7","2.8","2.9"]}
+
+# Testing Agenta API
+curl -s http://localhost/api/health
    {"status":"ok"}   
+
 ```
 
-<http://localhost:7600>
-<http://localhost:7600/api/docs>
+## Access Agenta Web
+
+<http://localhost>
+<http://localhost/api/docs>
 <http://localhost:8080/dashboard/>
+
+## Stop Agenta
+
+```bash
+docker compose -f hosting/docker-compose/oss/docker-compose.gh.yml --env-file hosting/docker-compose/oss/.env.oss.gh --profile with-web --profile with-traefik down --remove-orphans
+```
+
+## Postgres Verification
+
+```bash
+docker exec -it agenta-oss-gh-postgres-1 bash
+   psql -U postgres -d postgres
+      \l agenta_oss_core
+      \l agenta_oss_tracing
+      \l agenta_oss_supertokens
+      \q
+   psql -U username -d agenta_oss_supertokens -h localhost -W
+      # Enter: password
+      \l agenta_oss_core
+      \l agenta_oss_tracing
+      \l agenta_oss_supertokens
+      \q
+   exit
+
+```
