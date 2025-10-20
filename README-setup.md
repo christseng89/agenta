@@ -12,6 +12,13 @@ cp hosting/docker-compose/oss/env.oss.gh.example hosting/docker-compose/oss/.env
 ## **Edit** hosting/docker-compose/oss/.env.oss.gh & hosting/docker-compose/oss/docker-compose.gh.yml
 
 ```bash
+# For AGENTA_AUTH_KEY
+openssl rand -base64 32
+# For AGENTA_CRYPT_KEY
+openssl rand -base64 32
+```
+
+```bash
 docker compose -f hosting/docker-compose/oss/docker-compose.gh.yml --env-file hosting/docker-compose/oss/.env.oss.gh --profile with-web --profile with-traefik up -d
 
 docker logs agenta-oss-gh-web-1
