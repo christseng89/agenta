@@ -9,7 +9,11 @@
       "Bash(awk:*)",
       "Bash(xargs:*)",
       "Bash(git restore:*)",
-      "Bash(jobs:*)"
+      "Bash(jobs:*)",
+      "Bash(docker version:*)",
+      "Bash(docker run:*)",
+      "Bash(git config:*)",
+      "Bash(powershell -ExecutionPolicy Bypass -File \"D:\\development\\PromptEngineering\\agenta\\fix-line-endings.ps1\")"
     ],
     "deny": [],
     "ask": []

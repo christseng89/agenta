@@ -5,12 +5,12 @@ services:
         profiles:
             - with-web
 
-        # build:
-        #     context: ../../../web
-        #     dockerfile: oss/docker/Dockerfile.gh
+        build:
+            context: ../../../web
+            dockerfile: oss/docker/Dockerfile.gh
 
         image: ghcr.io/agenta-ai/${AGENTA_WEB_IMAGE_NAME:-agenta-web}:${AGENTA_WEB_IMAGE_TAG:-latest}
-
+        
         environment:
             - AGENTA_DEFAULT_THEME=${AGENTA_DEFAULT_THEME:-light}
             - AGENTA_THEME_PERSISTENCE=${AGENTA_THEME_PERSISTENCE:-true}
