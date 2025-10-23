@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker compose:*)",
+      "Bash(docker rmi:*)",
+      "Bash(docker logs:*)",
+      "Bash(docker inspect:*)",
+      "Bash(xargs docker inspect:*)",
+      "Bash(awk:*)",
+      "Bash(xargs:*)",
+      "Bash(git restore:*)",
+      "Bash(jobs:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
